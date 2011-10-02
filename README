@@ -1,0 +1,10 @@
+This project shows the simplest possible use of OpenGL ES from a Native Client
+module written in C, since the existing sample code is C++. The only OpenGL
+operation performed is a glClear.
+
+Build:
+NACL_SDK_ROOT=/path/to/sdk ./scons
+
+Run:
+./httpd.py &
+google-chrome http://localhost:5103/nacl3d.html
