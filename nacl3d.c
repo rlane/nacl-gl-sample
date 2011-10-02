@@ -23,6 +23,7 @@ static PP_Module module_id = 0;
 static struct PPB_Messaging* messaging_interface = NULL;
 static struct PPB_Var* var_interface = NULL;
 static struct PPB_Graphics3D* graphics3d_interface = NULL;
+static struct PPB_Instance* instance_interface = NULL;
 
 /**
  * Returns a mutable C string contained in the @a var or NULL if @a var is not
@@ -113,6 +114,11 @@ static PP_Bool Instance_DidCreate(PP_Instance instance,
   }
 
   glSetCurrentContextPPAPI(context);
+
+  if (!instance_interface->BindGraphics(instance, context)) {
+    printf("failed to bind graphics3d context\n");
+    return PP_FALSE;
+  }
 
   struct PP_CompletionCallback callback = { swap_callback, NULL, PP_COMPLETIONCALLBACK_FLAG_NONE };
   int32_t ret = graphics3d_interface->SwapBuffers(context, callback);
@@ -223,6 +229,8 @@ PP_EXPORT int32_t PPP_InitializeModule(PP_Module a_module_id,
       (struct PPB_Messaging*)(get_browser_interface(PPB_MESSAGING_INTERFACE));
   graphics3d_interface =
       (struct PPB_Graphics3D*)(get_browser_interface(PPB_GRAPHICS_3D_INTERFACE));
+  instance_interface =
+      (struct PPB_Instance*)(get_browser_interface(PPB_INSTANCE_INTERFACE));
 
   if (!glInitializePPAPI(get_browser_interface)) {
     printf("glInitializePPAPI failed\n");
