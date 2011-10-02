@@ -4,6 +4,7 @@
  */
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/c/pp_module.h"
 #include "ppapi/c/pp_var.h"
@@ -14,6 +15,7 @@
 #include "ppapi/c/ppp.h"
 #include "ppapi/c/ppp_instance.h"
 #include "ppapi/c/ppp_messaging.h"
+#include "ppapi/c/pp_completion_callback.h"
 #include "ppapi/c/ppb_graphics_3d.h"
 
 static PP_Module module_id = 0;
@@ -68,6 +70,11 @@ static struct PP_Var AllocateVarFromCStr(const char* str) {
 }
 #endif
 
+void swap_callback(void* user_data, int32_t result)
+{
+	printf("swap result: %d\n", result);
+}
+
 /**
  * Called when the NaCl module is instantiated on the web page. The identifier
  * of the new instance will be passed in as the first argument (this value is
@@ -99,6 +106,17 @@ static PP_Bool Instance_DidCreate(PP_Instance instance,
                        PP_GRAPHICS3DATTRIB_HEIGHT, 600,
                        PP_GRAPHICS3DATTRIB_NONE};
   context = graphics3d_interface->Create(instance, 0, attribs);
+  if (context == 0) {
+    printf("failed to create graphics3d context\n");
+    return PP_FALSE;
+  }
+
+  struct PP_CompletionCallback callback = { swap_callback, NULL, PP_COMPLETIONCALLBACK_FLAG_NONE };
+  int32_t ret = graphics3d_interface->SwapBuffers(context, callback);
+  if (ret != PP_OK && ret != PP_OK_COMPLETIONPENDING) {
+    printf("SwapBuffers failed with code %d\n", ret);
+    return PP_FALSE;
+  }
 
   return PP_TRUE;
 }
