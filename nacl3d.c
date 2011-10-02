@@ -18,6 +18,7 @@
 #include "ppapi/c/pp_completion_callback.h"
 #include "ppapi/c/ppb_graphics_3d.h"
 #include "ppapi/gles2/gl2ext_ppapi.h"
+#include "GLES2/gl2.h"
 
 static PP_Module module_id = 0;
 static struct PPB_Messaging* messaging_interface = NULL;
@@ -119,6 +120,9 @@ static PP_Bool Instance_DidCreate(PP_Instance instance,
     printf("failed to bind graphics3d context\n");
     return PP_FALSE;
   }
+
+  glClearColor(0.1f, 0.9f, 0.4f, 0.9f);
+  glClear(GL_COLOR_BUFFER_BIT);
 
   struct PP_CompletionCallback callback = { swap_callback, NULL, PP_COMPLETIONCALLBACK_FLAG_NONE };
   int32_t ret = graphics3d_interface->SwapBuffers(context, callback);
