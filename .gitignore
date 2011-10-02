@@ -2,11 +2,11 @@
 .sconsign.dblite
 dbg_x86_32/
 dbg_x86_64/
-nacl3d.nmf
-nacl3d_dbg.nmf
-nacl3d_x86_32.nexe
-nacl3d_x86_32_dbg.nexe
-nacl3d_x86_64.nexe
-nacl3d_x86_64_dbg.nexe
+nacl-gl-sample.nmf
+nacl-gl-sample_dbg.nmf
+nacl-gl-sample_x86_32.nexe
+nacl-gl-sample_x86_32_dbg.nexe
+nacl-gl-sample_x86_64.nexe
+nacl-gl-sample_x86_64_dbg.nexe
 opt_x86_32/
 opt_x86_64/

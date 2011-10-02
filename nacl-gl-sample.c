@@ -1,4 +1,4 @@
-/** @file nacl3d.c
+/** @file nacl-gl-sample.c
  * This example demonstrates how to use the Graphics3D interface from C.
  */
 #include <stdlib.h>

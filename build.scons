@@ -15,6 +15,6 @@ nacl_env.Append(
     LIBS=['ppapi_gles2'],
 )
 
-sources = ['nacl3d.c']
+sources = ['nacl-gl-sample.c']
 
-nacl_env.AllNaClModules(sources, 'nacl3d')
+nacl_env.AllNaClModules(sources, 'nacl-gl-sample')

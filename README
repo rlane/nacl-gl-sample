@@ -7,4 +7,4 @@ NACL_SDK_ROOT=/path/to/sdk ./scons
 
 Run:
 ./httpd.py &
-google-chrome http://localhost:5103/nacl3d.html
+google-chrome http://localhost:5103/nacl-gl-sample.html
