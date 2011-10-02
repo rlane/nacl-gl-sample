@@ -10,6 +10,11 @@ import os
 nacl_env = make_nacl_env.NaClEnvironment(
     nacl_platform=os.getenv('NACL_TARGET_PLATFORM'))
 
+nacl_env.Append(
+    EXTRA_CCFLAGS=['-Wall', '-Werror'],
+    LIBS=['ppapi_gles2'],
+)
+
 sources = ['nacl3d.c']
 
 nacl_env.AllNaClModules(sources, 'nacl3d')
