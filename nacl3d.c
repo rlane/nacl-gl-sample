@@ -14,10 +14,12 @@
 #include "ppapi/c/ppp.h"
 #include "ppapi/c/ppp_instance.h"
 #include "ppapi/c/ppp_messaging.h"
+#include "ppapi/c/ppb_graphics_3d.h"
 
 static PP_Module module_id = 0;
 static struct PPB_Messaging* messaging_interface = NULL;
 static struct PPB_Var* var_interface = NULL;
+static struct PPB_Graphics3D* graphics3d_interface = NULL;
 
 /**
  * Returns a mutable C string contained in the @a var or NULL if @a var is not
@@ -92,6 +94,12 @@ static PP_Bool Instance_DidCreate(PP_Instance instance,
                                   uint32_t argc,
                                   const char* argn[],
                                   const char* argv[]) {
+  PP_Resource context;
+  int32_t attribs[] = {PP_GRAPHICS3DATTRIB_WIDTH, 800,
+                       PP_GRAPHICS3DATTRIB_HEIGHT, 600,
+                       PP_GRAPHICS3DATTRIB_NONE};
+  context = graphics3d_interface->Create(instance, 0, attribs);
+
   return PP_TRUE;
 }
 
@@ -192,6 +200,8 @@ PP_EXPORT int32_t PPP_InitializeModule(PP_Module a_module_id,
   var_interface = (struct PPB_Var*)(get_browser_interface(PPB_VAR_INTERFACE));
   messaging_interface =
       (struct PPB_Messaging*)(get_browser_interface(PPB_MESSAGING_INTERFACE));
+  graphics3d_interface =
+      (struct PPB_Graphics3D*)(get_browser_interface(PPB_GRAPHICS_3D_INTERFACE));
   return PP_OK;
 }
 
